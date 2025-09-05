@@ -1,1 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teste Funcional</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .resultado {
+      margin: 20px auto;
+      max-width: 400px;
+      text-align: left;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .ok {
+      color: green;
+    }
+    .fail {
+      color: red;
+    }
+    .final {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Teste Funcional do Sistema</h1>
+  <div class="resultado" id="resultado">
+    <p>Executando testes...</p>
+  </div>
+  <div class="final" id="finalResult"></div>
+
+  <script>
+    function simularTeste(nome, passou = true) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve({ nome, status: passou ? "OK" : "FALHA" });
+        }, 800);
+      });
+    }
+
+    async function rodarTestes() {
+      const testes = [
+        await simularTeste("CPU"),
+        await simularTeste("Memória"),
+        await simularTeste("Disco"),
+        await simularTeste("Sistema Operacional"),
+      ];
+
+      let html = "";
+      let falhas = 0;
+
+      testes.forEach(teste => {
+        if (teste.status === "OK") {
+          html += `<p><strong>${teste.nome}:</strong> <span class="ok">OK</span></p>`;
+        } else {
+          html += `<p><strong>${teste.nome}:</strong> <span class="fail">FALHA</span></p>`;
+          falhas++;
+        }
+      });
+
+      document.getElementById("resultado").innerHTML = html;
+
+      const finalResult = document.getElementById("finalResult");
+      if (falhas === 0) {
+        finalResult.innerHTML = "✅ PASS";
+        finalResult.style.color = "green";
+      } else {
+        finalResult.innerHTML = "❌ FAIL";
+        finalResult.style.color = "red";
+      }
+    }
+
+    rodarTestes();
+  </script>
+
+</body>
+</html>
 
